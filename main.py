@@ -11,30 +11,35 @@ def read_files(fileName):
     dict = data.to_dict()
     keys = dict.keys()
     count = 0
-    counts = []
-
+    a_file = open("tables/products.csv","w")
     for key in keys:
         values = dict.get(key)
         for x in values:
             for color in colors:
                 count = count+1
                 sheets = fileName.replace("janela_","").replace(".ods","").replace("box_","").replace("porta_","").replace("open","").upper()
+
                 if not sheets:
                     sheets = "OPEN"
                 if sheets == "2F":
                     sheets = "DUAS"
                 if sheets == "4F":
                     sheets = "QUATRO"
+
+                sheets = sheets.replace("_","")
                 width = values[x][0:3].replace("x","")
                 height = values[x][4:7]
-                type = fileName.replace("_4f.ods","").replace("_2f.ods","").replace(".ods","").upper()
+                type = fileName.replace("_4f.ods","").replace("_2f.ods","").replace(".ods","").replace("_open","").upper()
 
                 if sheets == "BASCULA":
                     height = width
 
-                if type == "PORTA" and type == "JANELA":
-                    altura = width
-                    largura = height
+                if type == "PORTA" or type == "JANELA":
+                    aux = width
+                    width = height
+                    height = aux
+
+
 
                 if type == "BASCULA":
                     altura = width
@@ -47,7 +52,7 @@ def read_files(fileName):
                     "type": type,
                     "sheets": sheets,
                     "width": float(largura),
-                    "height": float(altura),
+                    "height": altura,
                     "color": color,
                 }
                 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
