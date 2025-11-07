@@ -1,2 +1,4 @@
 requests
 pandas-ods-reader
+aiohttp
+tqdm
